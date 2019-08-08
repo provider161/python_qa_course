@@ -4,7 +4,6 @@ Tests for https://jsonplaceholder.typicode.com/ API
 
 import requests
 import pytest
-import re
 
 BASE_URL = 'https://jsonplaceholder.typicode.com'
 
@@ -17,10 +16,10 @@ def test_json_1(resource, count):
     assert len(result) == count
 
 
-@pytest.mark.parametrize('id', [1, 10, 100])
-def test_json_2(id):
-    result = requests.get(BASE_URL+'/posts'+f'/{id}').json()
-    assert result['id'] == id
+@pytest.mark.parametrize('post_id', [1, 10, 100])
+def test_json_2(post_id):
+    result = requests.get(BASE_URL+'/posts'+f'/{post_id}').json()
+    assert result['id'] == post_id
 
 
 @pytest.mark.parametrize('postId', [2, 5, 100])

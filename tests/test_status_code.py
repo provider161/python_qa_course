@@ -1,3 +1,6 @@
+"""
+Tests for receiving status code API
+"""
 
 
 def test_status_code(api):

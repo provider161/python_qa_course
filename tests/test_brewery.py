@@ -2,9 +2,9 @@
 Tests for https://www.openbrewerydb.org API
 """
 
+import re
 import requests
 import pytest
-import re
 
 BASE_URL = 'https://api.openbrewerydb.org/breweries'
 

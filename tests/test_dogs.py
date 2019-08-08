@@ -2,9 +2,9 @@
 Tests for https://dog.ceo/dog-api/ API
 """
 
+import re
 import requests
 import pytest
-import re
 
 
 def test_dog_1():
@@ -31,4 +31,4 @@ def test_dog_4():
 @pytest.mark.parametrize('dogs', ["affenpinscher", "african", "airedale", "akita", "borzoi"])
 def test_dog_5(dogs):
     result = requests.get(f'https://dog.ceo/api/breed/{dogs}/images/random').json()
-    assert re.search('\.(jpg)$',result['message'])
+    assert re.search('\.(jpg)$', result['message'])
