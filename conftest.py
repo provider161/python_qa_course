@@ -1,17 +1,29 @@
+"""
+Settings for fixtures managing, adding options to tests
+"""
+
 import pytest
-from fixtures.api import APIClient
+from fixtures.browser import Browser
 
 
 def pytest_addoption(parser):
     parser.addoption(
         "--url",
-        default="https://ya.ru",
+        default="http://127.0.0.1",
         action="store",
-        help="This is request url"
+        help="This is application base url")
+    parser.addoption(
+        "--browser",
+        default='chrome',
+        action='store',
+        help='Browser to run tests'
     )
-
+    
 
 @pytest.fixture(scope="session")
-def api(request):
+def browser(request):
     base_url = request.config.getoption("--url")
-    return APIClient(base_url=base_url)
+    browser = request.config.getoption("--browser")
+    fixture = Browser(base_url=base_url, browser=browser)
+    yield fixture
+    fixture.quit()
