@@ -33,3 +33,6 @@ class Browser:
 
     def open_homepage(self):
         self.wd.get(self.base_url)
+
+    def open_admin_login_page(self):
+        self.wd.get(self.base_url + '/admin')
