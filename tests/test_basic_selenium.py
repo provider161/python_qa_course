@@ -1,6 +1,8 @@
+# This Python file uses the following encoding: utf-8
 """
 Tests using basic selenium functions - find element, click, send_keys and so on
 """
+
 from locators.admin_page import AdminPage
 from locators.admin_login import AdminLogin
 from locators.product import Product
@@ -23,7 +25,7 @@ def test_change_currency(browser):
     browser.open_homepage()
     browser.wd.find_element(*Header.currency_button).click()
     browser.wd.find_element(*Header.currency_euro).click()
-    assert browser.wd.find_element(*Header.current_currency).text == "€"
+    assert browser.wd.find_element(*Header.current_currency).text == u"\u20AC"
 
 
 def test_search_laptop(browser):

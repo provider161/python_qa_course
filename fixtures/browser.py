@@ -11,7 +11,7 @@ from locators.admin_page import AdminPage
 
 class Browser:
 
-    def __init__(self, browser, base_url):
+    def __init__(self, browser, base_url, imp_wait):
         if browser == "chrome":
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument('headless')
@@ -29,7 +29,7 @@ class Browser:
             self.wd.maximize_window()
         else:
             raise ValueError("Unrecognized browser: %s" % browser)
-        self.wd.implicitly_wait(60)
+        self.wd.implicitly_wait(int(imp_wait))
         self.base_url = base_url
 
     def quit(self):
@@ -43,4 +43,7 @@ class Browser:
 
     def accept_alert(self):
         Alert(self.wd).accept()
-        WebDriverWait(self.wd, 5).until(EC.presence_of_element_located(AdminPage.Products.success_delete))
+        self.wait_success_alert()
+
+    def wait_success_alert(self):
+        WebDriverWait(self.wd, 5).until(EC.presence_of_element_located(AdminPage.Products.success_alert))

@@ -21,7 +21,7 @@ class AdminPage:
         add_new = (By.CSS_SELECTOR, 'a[data-original-title="Add New"]')
         copy = (By.CSS_SELECTOR, 'button[data-original-title="Copy"]')
         delete = (By.CSS_SELECTOR, 'button[data-original-title="Delete"]')
-        success_delete = (By.CSS_SELECTOR, '.alert.alert-success.alert-dismissible')
+        success_alert = (By.CSS_SELECTOR, '.alert.alert-success.alert-dismissible')
 
         class ProductList:
 

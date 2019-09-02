@@ -16,7 +16,12 @@ def pytest_addoption(parser):
         "--browser",
         default='chrome',
         action='store',
-        help='Browser to run tests'
+        help='Browser to run tests')
+    parser.addoption(
+        "--imp_wait",
+        default='60',
+        action='store',
+        help='Implicit wait time for browser, seconds'
     )
     
 
@@ -24,6 +29,7 @@ def pytest_addoption(parser):
 def browser(request):
     base_url = request.config.getoption("--url")
     browser = request.config.getoption("--browser")
-    fixture = Browser(base_url=base_url, browser=browser)
+    imp_wait = request.config.getoption("--imp_wait")
+    fixture = Browser(base_url=base_url, browser=browser, imp_wait=imp_wait)
     yield fixture
     fixture.quit()

@@ -15,3 +15,5 @@ class Product:
     description = (By.XPATH, '//*[text() = "Description"]')
     specification = (By.XPATH, '//*[text() = "Specification"]')
     reviews = (By.XPATH, '//*[contains(text(), "Reviews")]')
+    add_product_title = (By.XPATH, '//*[contains(text(), "Add Product")]')
+    edit_product_title = (By.XPATH, '//*[contains(text(), "Edit Product")]')
