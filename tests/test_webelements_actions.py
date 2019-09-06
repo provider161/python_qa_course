@@ -5,6 +5,8 @@ from locators.admin_page import AdminPage
 from locators.admin_login import AdminLogin
 from locators.product import Product
 
+from page_objects.utils import Utils
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -34,6 +36,7 @@ def test_add_product(browser):
 
 
 def test_delete_product(browser):
+    utils = Utils(browser.wd)
     browser.open_admin_login_page()
     browser.wd.find_element(*AdminLogin.username).send_keys('user')
     browser.wd.find_element(*AdminLogin.password).send_keys('bitnami1')
@@ -45,7 +48,7 @@ def test_delete_product(browser):
     product_for_delete_name = product_for_delete.find_element(*AdminPage.Products.ProductList.product_name).text
     product_for_delete.find_element(*AdminPage.Products.ProductList.checkbox).click()
     browser.wd.find_element(*AdminPage.Products.delete).click()
-    browser.accept_alert()
+    utils.accept_alert()
     new_products_list = browser.wd.find_elements(*AdminPage.Products.ProductList.product_in_list)
     new_names = []
     for product in new_products_list:

@@ -12,17 +12,26 @@ from locators.footer import Footer
 from locators.search_page import SearchPage
 from locators.contact_us import ContactUs
 
+from page_objects.admin_login import AdminLogin
+from page_objects.admin_page import AdminPage
+from page_objects.header import Header
+
 
 def test_admin_login(browser):
+    admin_login = AdminLogin(browser.wd)
+    admin_page = AdminPage(browser.wd)
     browser.open_admin_login_page()
-    browser.wd.find_element(*AdminLogin.username).send_keys('user')
-    browser.wd.find_element(*AdminLogin.password).send_keys('bitnami1')
-    browser.wd.find_element(*AdminLogin.login_button).click()
-    browser.wd.find_element(*AdminPage.logout)
+    admin_login.fill_username('user')
+    admin_login.fill_password('bitnami1')
+    admin_login.login()
+    admin_page.logout()
 
 
 def test_change_currency(browser):
+    header = Header(browser.wd)
+    currency = 'EUR'
     browser.open_homepage()
+    header.change_currency(currency)
     browser.wd.find_element(*Header.currency_button).click()
     browser.wd.find_element(*Header.currency_euro).click()
     assert browser.wd.find_element(*Header.current_currency).text == u"\u20AC"
