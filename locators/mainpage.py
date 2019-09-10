@@ -1,6 +1,7 @@
 """
 Locators for elements on main page of application. Using selenium By module and css, xpath locators
 """
+
 from selenium.webdriver.common.by import By
 
 

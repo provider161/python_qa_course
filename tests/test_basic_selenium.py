@@ -3,18 +3,12 @@
 Tests using basic selenium functions - find element, click, send_keys and so on
 """
 
-from locators.admin_page import AdminPage
-from locators.admin_login import AdminLogin
-from locators.product import Product
-from locators.mainpage import MainPage
-from locators.header import Header
-from locators.footer import Footer
-from locators.search_page import SearchPage
-from locators.contact_us import ContactUs
-
 from page_objects.admin_login import AdminLogin
 from page_objects.admin_page import AdminPage
 from page_objects.header import Header
+from page_objects.search_page import SearchPage
+from page_objects.mainpage import MainPage
+from page_objects.contact_us import ContactUs
 
 
 def test_admin_login(browser):
@@ -29,30 +23,34 @@ def test_admin_login(browser):
 
 def test_change_currency(browser):
     header = Header(browser.wd)
-    currency = 'EUR'
+    currency = 'USD'
     browser.open_homepage()
     header.change_currency(currency)
-    browser.wd.find_element(*Header.currency_button).click()
-    browser.wd.find_element(*Header.currency_euro).click()
-    assert browser.wd.find_element(*Header.current_currency).text == u"\u20AC"
+    new_currency = header.get_currency()
+    assert currency == new_currency
 
 
 def test_search_laptop(browser):
+    main_page = MainPage(browser.wd)
+    search_page = SearchPage(browser.wd)
     browser.open_homepage()
-    browser.wd.find_element(*MainPage.search_string).send_keys('laptop')
-    browser.wd.find_element(*MainPage.search_button).click()
-    search_query = browser.wd.find_element(*SearchPage.search_query).text
+    main_page.search('laptop')
+    search_query = search_page.get_search_query_text()
     assert search_query == 'Search - laptop'
 
 
 def test_get_contact_us_page(browser):
+    header = Header(browser.wd)
+    contact_us = ContactUs(browser.wd)
     browser.open_homepage()
-    browser.wd.find_element(*Header.contacts).click()
-    page_topic = browser.wd.find_element(*ContactUs.page_topic).text
+    header.open_contact_us_page()
+    page_topic = contact_us.get_page_topic()
     assert page_topic == 'Contact Us'
 
 
 def test_next_banner(browser):
+    main_page = MainPage(browser.wd)
+    banner = 'macbook'
     browser.open_homepage()
-    browser.wd.find_element(*MainPage.next_banner).click()
-    browser.wd.find_element(*MainPage.macbook_banner)
+    main_page.switch_next_banner()
+    main_page.check_banner_is_present(banner)

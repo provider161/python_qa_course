@@ -25,4 +25,13 @@ class Header:
 
     def get_currency(self):
         currency = self.driver.find_element(*header.current_currency)
-        return currency.text
+        if currency.text == '€':
+            return 'EUR'
+        elif currency.text == '$':
+            return 'USD'
+        elif currency.text == '£':
+            return 'GBP'
+
+    def open_contact_us_page(self):
+        contacts_button = self.driver.find_element(*header.contacts)
+        contacts_button.click()
