@@ -27,3 +27,34 @@ class MainPage:
             self.driver.find_element(*main_page.macbook_banner)
         elif banner == 'iphone':
             self.driver.find_element(*main_page.iphone_banner)
+
+    def open_tablets_category(self):
+        tablets = self.driver.find_element(*main_page.tablets)
+        tablets.click()
+
+    def get_category_title(self):
+        title = self.driver.find_element(*main_page.category_title)
+        return title.text
+
+    def get_shopping_cart_status(self):
+        status = self.driver.find_element(*main_page.shopping_cart.status).text
+        return status
+
+    def open_cameras_category(self):
+        cameras = self.driver.find_element(*main_page.cameras)
+        cameras.click()
+
+    def select_first_product(self):
+        first_product = self.driver.find_element(*main_page.products.product_item_img)
+        first_product.click()
+
+    def select_list_view(self):
+        list_view = self.driver.find_element(*main_page.products.list_view)
+        list_view.click()
+
+    def select_grid_view(self):
+        grid_view = self.driver.find_element(*main_page.products.grid_view)
+        grid_view.click()
+
+    def is_grid_view(self):
+        return True if self.driver.find_element(*main_page.products.grid_view) else False

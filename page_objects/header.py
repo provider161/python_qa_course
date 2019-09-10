@@ -35,3 +35,7 @@ class Header:
     def open_contact_us_page(self):
         contacts_button = self.driver.find_element(*header.contacts)
         contacts_button.click()
+
+    def open_shopping_cart(self):
+        shopping_cart = self.driver.find_element(*header.shopping_cart)
+        shopping_cart.click()
