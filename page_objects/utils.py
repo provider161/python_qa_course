@@ -19,3 +19,17 @@ class Utils:
 
     def wait_success_alert(self):
         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(AdminPage.Products.success_alert))
+
+    def create_file_upload_form(self):
+        self.driver.execute_script("""
+        var form = document.createElement("form");
+        form.id = "form-upload";
+        form.style.display = "block";
+        form.enctype = "multipart/form-data";
+        input = document.createElement("input");
+        input.type = "file";
+        input.name = "file";
+        form.appendChild(input);
+        body = document.getElementsByTagName("body")[0];
+        body.insertBefore(form, body.firstChild);
+        """)
