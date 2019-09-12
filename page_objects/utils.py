@@ -18,7 +18,7 @@ class Utils:
         self.wait_success_alert()
 
     def wait_success_alert(self):
-        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(AdminPage.Products.success_alert))
+        WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(AdminPage.products.success_alert))
 
     def create_file_upload_form(self):
         self.driver.execute_script("""
@@ -33,3 +33,7 @@ class Utils:
         body = document.getElementsByTagName("body")[0];
         body.insertBefore(form, body.firstChild);
         """)
+
+    def is_file_uploaded(self):
+        uploaded_file = self.driver.find_element(*AdminPage.downloads.upload_input).get_attribute('value')
+        return True if uploaded_file else False

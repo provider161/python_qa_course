@@ -8,29 +8,31 @@ class AdminPage:
 
     logout = (By.CSS_SELECTOR, '.fa.fa-sign-out')
 
-    class Navigation:
+    class navigation:
 
         catalog = (By.CSS_SELECTOR, '#menu-catalog a')
 
-        class CatalogMenu:
+        class catalog_menu:
 
             products = (By.XPATH, '//*[@id="menu-catalog"]//*[text() = "Products"]')
+            downloads = (By.XPATH, '//*[@id="menu-catalog"]//*[text() = "Downloads"]')
 
-    class Products:
+
+    class products:
 
         add_new = (By.CSS_SELECTOR, 'a[data-original-title="Add New"]')
         copy = (By.CSS_SELECTOR, 'button[data-original-title="Copy"]')
         delete = (By.CSS_SELECTOR, 'button[data-original-title="Delete"]')
         success_alert = (By.CSS_SELECTOR, '.alert.alert-success.alert-dismissible')
 
-        class ProductList:
+        class product_list:
 
             product_in_list = (By.CSS_SELECTOR, '.table-responsive tbody tr')
             checkbox = (By.CSS_SELECTOR, "input[type='checkbox']")
             edit = (By.CSS_SELECTOR, 'a[data-original-title="Edit"]')
             product_name = (By.XPATH, './/td[@class="text-left"][1]')
 
-        class AddProduct:
+        class add_product:
 
             save = (By.CSS_SELECTOR, 'button[data-original-title="Save"]')
 
@@ -42,3 +44,7 @@ class AdminPage:
             # navigation bookmarks
             navigation_data = (By.XPATH, '//*[text() = "Data"]')
             navigation_general = (By.XPATH, '//*[text() = "General"]')
+
+    class downloads:
+
+        upload_input = (By.CSS_SELECTOR, 'input[type=file]')
