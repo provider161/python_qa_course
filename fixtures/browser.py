@@ -1,9 +1,11 @@
 """
 Fixture for browser to run tests, using selenium webdriver, options, arguments, and additional methods to manage fixture
 """
+from .logger import create_log
+import time
 
 from selenium import webdriver
-from .logger import create_log
+from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
 
 
 class Browser:
@@ -12,17 +14,20 @@ class Browser:
         if browser == "chrome":
             chrome_options = webdriver.ChromeOptions()
             chrome_options.add_argument('headless')
-            self.wd = webdriver.Chrome(options=chrome_options)
+            wd = webdriver.Chrome(options=chrome_options)
+            self.wd = EventFiringWebDriver(wd, MyListener())
             self.wd.maximize_window()
         elif browser == "firefox":
             firefox_options = webdriver.FirefoxOptions()
             firefox_options.headless = True
-            self.wd = webdriver.Firefox(options=firefox_options)
+            wd = webdriver.Firefox(options=firefox_options)
+            self.wd = EventFiringWebDriver(wd, MyListener())
             self.wd.maximize_window()
         elif browser == 'ie':
             ie_options = webdriver.IeOptions()
             ie_options.add_argument('headless')
-            self.wd = webdriver.Ie(options=ie_options)
+            wd = webdriver.Ie(options=ie_options)
+            self.wd = EventFiringWebDriver(wd, MyListener())
             self.wd.maximize_window()
         else:
             raise ValueError("Unrecognized browser: %s" % browser)
@@ -41,3 +46,22 @@ class Browser:
     def open_admin_login_page(self):
         self.log.info('Opening adminpage')
         self.wd.get(self.base_url + '/admin')
+
+
+class MyListener(AbstractEventListener):
+
+    def __init__(self, *args, **kwargs):
+        self.log = create_log()
+        super().__init__(*args, **kwargs)
+
+    def on_exception(self, exception, driver):
+        driver.save_screenshot(f'screenshots/exception-{time.time()}-{exception}.png')
+        print(exception)
+
+    def before_find(self, by, value, driver):
+        self.log.info(f'Finding by - {by}, selector - {value}')
+        print(by, value)
+
+    def before_click(self, element, driver):
+        self.log.info(f'Clicking on {element}')
+        print(element)
