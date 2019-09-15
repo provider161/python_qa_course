@@ -12,22 +12,32 @@ from page_objects.contact_us import ContactUs
 
 
 def test_admin_login(browser):
+    browser.log.info('Test test_admin_login starting')
     admin_login = AdminLogin(browser.wd)
     admin_page = AdminPage(browser.wd)
     browser.open_admin_login_page()
     admin_login.fill_username('user')
     admin_login.fill_password('bitnami1')
     admin_login.login()
-    admin_page.logout()
+    browser.log.info('Logging out')
+    try:
+        admin_page.logout()
+    except Exception as e:
+        browser.log.error(f'Exception - {e}')
 
 
 def test_change_currency(browser):
+    browser.log.info('Test test_change_currency starting')
     header = Header(browser.wd)
     currency = 'USD'
     browser.open_homepage()
     header.change_currency(currency)
     new_currency = header.get_currency()
-    assert currency == new_currency
+    browser.log.info('Asserting currencies')
+    try:
+        assert currency == new_currency
+    except AssertionError:
+        browser.log.error(f'Currencies are different: test currency - {currency}, new_currency - {new_currency}')
 
 
 def test_search_laptop(browser):

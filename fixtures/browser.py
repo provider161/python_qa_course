@@ -3,6 +3,7 @@ Fixture for browser to run tests, using selenium webdriver, options, arguments, 
 """
 
 from selenium import webdriver
+from .logger import create_log
 
 
 class Browser:
@@ -27,12 +28,16 @@ class Browser:
             raise ValueError("Unrecognized browser: %s" % browser)
         self.wd.implicitly_wait(int(imp_wait))
         self.base_url = base_url
+        self.log = create_log()
 
     def quit(self):
+        self.log.info('Closing browser')
         self.wd.quit()
 
     def open_homepage(self):
+        self.log.info('Opening homepage')
         self.wd.get(self.base_url)
 
     def open_admin_login_page(self):
+        self.log.info('Opening adminpage')
         self.wd.get(self.base_url + '/admin')
