@@ -1,6 +1,7 @@
 """
 Settings for fixtures managing, adding options to tests
 """
+import os
 
 import pytest
 from fixtures.browser import Browser
@@ -33,3 +34,10 @@ def browser(request):
     fixture = Browser(base_url=base_url, browser=browser, imp_wait=imp_wait)
     yield fixture
     fixture.quit()
+
+
+def pytest_configure(config):
+    config._metadata['os'] = os.name
+    config._metadata['PATH'] = os.environ['PATH']
+    config._metadata['pwd'] = os.getcwd()
+

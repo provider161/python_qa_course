@@ -102,3 +102,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# logs
+/logs/
+
+# reports
+/assets/
+/report.html
+/report/

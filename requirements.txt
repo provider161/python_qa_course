@@ -2,3 +2,4 @@ pytest
 pylint
 requests
 selenium
+pytest-html
