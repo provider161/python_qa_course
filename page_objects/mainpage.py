@@ -2,7 +2,7 @@
 Class for application homepage description.
 Contains methods to interact with page parts, elements, get page information
 """
-
+import allure
 from locators.mainpage import MainPage as main_page
 
 
@@ -29,12 +29,14 @@ class MainPage:
             self.driver.find_element(*main_page.iphone_banner)
 
     def open_tablets_category(self):
-        tablets = self.driver.find_element(*main_page.tablets)
-        tablets.click()
+        with allure.step('Open tablets category'):
+            tablets = self.driver.find_element(*main_page.tablets)
+            tablets.click()
 
     def get_category_title(self):
-        title = self.driver.find_element(*main_page.category_title)
-        return title.text
+        with allure.step('Getting category title'):
+            title = self.driver.find_element(*main_page.category_title)
+            return title.text
 
     def get_shopping_cart_status(self):
         status = self.driver.find_element(*main_page.shopping_cart.status).text

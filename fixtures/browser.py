@@ -1,6 +1,8 @@
 """
 Fixture for browser to run tests, using selenium webdriver, options, arguments, and additional methods to manage fixture
 """
+
+import allure
 from .logger import create_log
 import time
 
@@ -40,12 +42,14 @@ class Browser:
         self.wd.quit()
 
     def open_homepage(self):
-        self.log.info('Opening homepage')
-        self.wd.get(self.base_url)
+        with allure.step('Opening homepage'):
+            self.log.info('Opening homepage')
+            self.wd.get(self.base_url)
 
     def open_admin_login_page(self):
-        self.log.info('Opening adminpage')
-        self.wd.get(self.base_url + '/admin')
+        with allure.step('Opening adminpage'):
+            self.log.info('Opening adminpage')
+            self.wd.get(self.base_url + '/admin')
 
 
 class MyListener(AbstractEventListener):
