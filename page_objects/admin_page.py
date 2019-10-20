@@ -27,3 +27,13 @@ class AdminPage:
     def upload_file(self, file_path):
         input = self.driver.find_element(*admin_page.downloads.upload_input)
         input.send_keys(file_path)
+
+    def get_currencies_titles(self):
+        self.driver.find_element(*admin_page.navigation.system).click()
+        self.driver.find_element(*admin_page.navigation.system_menu.localisation).click()
+        self.driver.find_element(*admin_page.navigation.system_menu.localisation_menu.currencies).click()
+        currencies = self.driver.find_elements(*admin_page.currencies.currency_title)
+        titles = []
+        for currency in currencies:
+            titles.append(currency.text)
+        return titles

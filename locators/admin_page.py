@@ -11,12 +11,24 @@ class AdminPage:
     class navigation:
 
         catalog = (By.CSS_SELECTOR, '#menu-catalog a')
+        system = (By.CSS_SELECTOR, '#menu-system a')
 
         class catalog_menu:
 
             products = (By.XPATH, '//*[@id="menu-catalog"]//*[text() = "Products"]')
             downloads = (By.XPATH, '//*[@id="menu-catalog"]//*[text() = "Downloads"]')
 
+        class system_menu:
+
+            localisation = (By.XPATH, '//*[@id="menu-system"]//*[text() = "Localisation"]')
+
+            class localisation_menu:
+
+                currencies = (By.XPATH, '//*[@id="menu-system"]//*[text() = "Currencies"]')
+
+    class currencies:
+
+        currency_title = (By.XPATH, "//form[@id='form-currency']//tbody/tr/td[2]")
 
     class products:
 

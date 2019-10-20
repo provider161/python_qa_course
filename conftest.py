@@ -5,6 +5,7 @@ import os
 
 import pytest
 from fixtures.browser import Browser
+from fixtures.db import DataBase
 
 
 def pytest_addoption(parser):
@@ -34,6 +35,21 @@ def browser(request):
     fixture = Browser(base_url=base_url, browser=browser, imp_wait=imp_wait)
     yield fixture
     fixture.quit()
+
+
+@pytest.fixture(scope="session")
+def db():
+    db_config = {
+        'host': 'localhost',
+        'name': 'bitnami_opencart',
+        'user': 'bn_opencart',
+        'password': '',
+        'port': 8083
+    }
+    dbfixture = DataBase(host=db_config['host'], name=db_config['name'], user=db_config['user'],
+                         password=db_config['password'], port=int(db_config['port']))
+    yield dbfixture
+    dbfixture.destroy()
 
 
 def pytest_configure(config):

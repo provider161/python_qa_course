@@ -5,3 +5,4 @@ selenium
 pytest-html
 allure-pytest
 sqlalchemy
+pymysql
