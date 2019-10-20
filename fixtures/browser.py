@@ -5,6 +5,7 @@ Fixture for browser to run tests, using selenium webdriver, options, arguments, 
 import allure
 from .logger import create_log
 import time
+from utils.sqlite import Sqlite
 
 from selenium import webdriver
 from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
@@ -57,15 +58,19 @@ class MyListener(AbstractEventListener):
     def __init__(self, *args, **kwargs):
         self.log = create_log()
         super().__init__(*args, **kwargs)
+        self.db_log = Sqlite()
 
     def on_exception(self, exception, driver):
+        self.db_log.write_log(f'Screenshot path - screenshots/exception-{time.time()}-{exception}.png')
         driver.save_screenshot(f'screenshots/exception-{time.time()}-{exception}.png')
         print(exception)
 
     def before_find(self, by, value, driver):
+        self.db_log.write_log(f'Finding by - {by}, selector - {value}')
         self.log.info(f'Finding by - {by}, selector - {value}')
         print(by, value)
 
     def before_click(self, element, driver):
+        self.db_log.write_log(f'Clicking on {element}')
         self.log.info(f'Clicking on {element}')
         print(element)
