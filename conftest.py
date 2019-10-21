@@ -4,6 +4,7 @@ Settings for fixtures managing, adding options to tests
 import os
 
 import pytest
+import paramiko
 from fixtures.browser import Browser
 from fixtures.db import DataBase
 
@@ -50,6 +51,22 @@ def db():
                          password=db_config['password'], port=int(db_config['port']))
     yield dbfixture
     dbfixture.destroy()
+
+
+@pytest.fixture(scope="session")
+def ssh_client():
+    ssh_conf = {
+        'host': '0.0.0.0',
+        'user': 'user',
+        'pass': 'user',
+        'port': 8082
+    }
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(hostname=ssh_conf['host'], username=ssh_conf['user'],
+                   password=ssh_conf['pass'], port=ssh_conf['port'])
+    yield client
+    client.close()
 
 
 def pytest_configure(config):
