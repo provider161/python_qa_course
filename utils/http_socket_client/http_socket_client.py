@@ -15,7 +15,7 @@ args = {
 }
 
 
-def get_response(method: str, host: str, port: int, headers: str) -> str:
+def print_response(method: str, host: str, port: int, headers: str):
     """
 
     Parameters
@@ -45,21 +45,40 @@ def get_response(method: str, host: str, port: int, headers: str) -> str:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock = context.wrap_socket(sock, server_hostname=host)
 
-    request = f'{method.upper()} / HTTP/1.1\n\n' + f'Host: {host}\n\n' + f'{headers}'
+    request = f'{method.upper()} / HTTP/1.1\r\n' + f'Host: {host}\r\n' + f'{headers}\r\n\r\n'
 
     # connect to server and send request
     sock.connect((host, port))
     sock.send(request.encode())
-    result = sock.recv(8192)
 
-    return result.decode()
+    print_result(sock)
+
+
+def print_result(sock: socket):
+    """
+    Get all data returned by response
+
+    Parameters
+    ----------
+    sock
+        socket connection instance
+    Returns
+    -------
+        received data from socket
+
+    """
+
+    BUFF_SIZE = 4096
+    data = sock.recv(BUFF_SIZE)
+    while len(data) > 0:
+        print(data)
+        data = sock.recv(BUFF_SIZE)
 
 
 def main():
     """Application entry point."""
 
-    result = get_response(method=args['method'], host=args['host'], port=int(args['port']), headers=args['headers'])
-    print(result)
+    print_response(method=args['method'], host=args['host'], port=int(args['port']), headers=args['headers'])
 
 
 if __name__ == '__main__':
