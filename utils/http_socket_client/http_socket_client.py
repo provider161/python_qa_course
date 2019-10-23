@@ -69,6 +69,7 @@ class MyHTMLParser(HTMLParser):
     tags = []
     links = []
     images = []
+    text = []
 
     # HTML Parser Methods
     def handle_starttag(self, startTag, attrs):
@@ -83,31 +84,48 @@ class MyHTMLParser(HTMLParser):
             attr = dict(attrs)
             self.images.append(attr['src'])
 
+    def handle_data(self, data):
+        # parsing text in tags
+        self.text.append(data)
+
 
 def main():
     """Application entry point."""
 
     parser = MyHTMLParser()
-    result = print_response(method=args['method'], host=args['host'], port=int(args['port']), headers=args['headers'])
-    parser.feed(result)
+    html = print_response(method=args['method'], host=args['host'], port=int(args['port']), headers=args['headers'])
+    parser.feed(html)
     tags = Counter(parser.tags)
-    popular_tag = sorted(tags.items(), key=lambda k: k[1])
+    popular_tag = sorted(Counter(parser.tags).items(), key=lambda k: k[1])
     links = list(parser.links)
     images = list(parser.images)
+    text = list(parser.text)
+    result = {
+        'all_tags': tags,
+        'popular_tag': popular_tag[-1],
+        'links': links,
+        'images': images,
+        'text': text
+    }
+
     print('--------All tags----------------------------------------')
-    for tag in list(tags):
+    for tag in list(result['all_tags']):
         print(tag)
     print()
     print('--------Most popular tag--------------------------------')
-    print(popular_tag[-1])
+    print(result['popular_tag'])
     print()
     print('--------Links-------------------------------------------')
-    for link in links:
+    for link in result['links']:
         print(link)
     print()
     print('--------Images------------------------------------------')
-    for image in images:
+    for image in result['images']:
         print(image)
+    print()
+    print('--------Text in tags------------------------------------')
+    for t in result['text']:
+        print(t)
 
 
 if __name__ == '__main__':
