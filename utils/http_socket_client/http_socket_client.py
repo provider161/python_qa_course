@@ -5,6 +5,8 @@ Returns response text, status code, headers
 
 import socket
 import ssl
+from collections import Counter
+from html.parser import HTMLParser
 
 # arguments for HTTP request
 args = {
@@ -51,34 +53,61 @@ def print_response(method: str, host: str, port: int, headers: str):
     sock.connect((host, port))
     sock.send(request.encode())
 
-    print_result(sock)
-
-
-def print_result(sock: socket):
-    """
-    Get all data returned by response
-
-    Parameters
-    ----------
-    sock
-        socket connection instance
-    Returns
-    -------
-        received data from socket
-
-    """
-
     BUFF_SIZE = 4096
-    data = sock.recv(BUFF_SIZE)
-    while len(data) > 0:
-        print(data)
-        data = sock.recv(BUFF_SIZE)
+    data = b''
+    while True:
+        part = sock.recv(BUFF_SIZE)
+        data += part
+        if '</html>' in part.decode():
+            break
+    return data.decode()
+
+
+class MyHTMLParser(HTMLParser):
+
+    # Initializing lists
+    tags = []
+    links = []
+    images = []
+
+    # HTML Parser Methods
+    def handle_starttag(self, startTag, attrs):
+        # parsing all tags
+        self.tags.append(startTag)
+        # parsing links
+        if startTag == 'a':
+            attr = dict(attrs)
+            self.links.append(attr['href'])
+        # parsing images
+        elif startTag == 'img':
+            attr = dict(attrs)
+            self.images.append(attr['src'])
 
 
 def main():
     """Application entry point."""
 
-    print_response(method=args['method'], host=args['host'], port=int(args['port']), headers=args['headers'])
+    parser = MyHTMLParser()
+    result = print_response(method=args['method'], host=args['host'], port=int(args['port']), headers=args['headers'])
+    parser.feed(result)
+    tags = Counter(parser.tags)
+    popular_tag = sorted(tags.items(), key=lambda k: k[1])
+    links = list(parser.links)
+    images = list(parser.images)
+    print('--------All tags----------------------------------------')
+    for tag in list(tags):
+        print(tag)
+    print()
+    print('--------Most popular tag--------------------------------')
+    print(popular_tag[-1])
+    print()
+    print('--------Links-------------------------------------------')
+    for link in links:
+        print(link)
+    print()
+    print('--------Images------------------------------------------')
+    for image in images:
+        print(image)
 
 
 if __name__ == '__main__':
