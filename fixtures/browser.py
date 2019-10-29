@@ -62,16 +62,16 @@ class MyListener(AbstractEventListener):
         self.db_log = Sqlite()
 
     def on_exception(self, exception, driver):
-        self.db_log.write_log(f'Screenshot path - screenshots/exception-{time.time()}-{exception}.png')
+        #self.db_log.write_log(f'Screenshot path - screenshots/exception-{time.time()}-{exception}.png')
         driver.save_screenshot(f'screenshots/exception-{time.time()}-{exception}.png')
         print(exception)
 
     def before_find(self, by, value, driver):
-        self.db_log.write_log(f'Finding by - {by}, selector - {value}')
+        #self.db_log.write_log(f'Finding by - {by}, selector - {value}')
         self.log.info(f'Finding by - {by}, selector - {value}')
         print(by, value)
 
     def before_click(self, element, driver):
-        self.db_log.write_log(f'Clicking on {element}')
+        #self.db_log.write_log(f'Clicking on {element}')
         self.log.info(f'Clicking on {element}')
         print(element)
