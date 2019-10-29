@@ -16,7 +16,8 @@ class Browser:
     def __init__(self, browser, base_url, imp_wait):
         if browser == "chrome":
             chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('headless')
+            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--no-sandbox')
             wd = webdriver.Chrome(options=chrome_options)
             self.wd = EventFiringWebDriver(wd, MyListener())
             self.wd.maximize_window()
