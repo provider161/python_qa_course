@@ -9,32 +9,48 @@ from utils.sqlite import Sqlite
 
 from selenium import webdriver
 from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 class Browser:
 
-    def __init__(self, browser, base_url, imp_wait):
-        if browser == "chrome":
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('--headless')
-            chrome_options.add_argument('--no-sandbox')
-            wd = webdriver.Chrome(options=chrome_options)
-            self.wd = EventFiringWebDriver(wd, MyListener())
-            self.wd.maximize_window()
-        elif browser == "firefox":
-            firefox_options = webdriver.FirefoxOptions()
-            firefox_options.headless = True
-            wd = webdriver.Firefox(options=firefox_options)
-            self.wd = EventFiringWebDriver(wd, MyListener())
-            self.wd.maximize_window()
-        elif browser == 'ie':
-            ie_options = webdriver.IeOptions()
-            ie_options.add_argument('headless')
-            wd = webdriver.Ie(options=ie_options)
-            self.wd = EventFiringWebDriver(wd, MyListener())
-            self.wd.maximize_window()
+    def __init__(self, browser, base_url, imp_wait, grid):
+        if not grid:
+            if browser == "chrome":
+                chrome_options = webdriver.ChromeOptions()
+                chrome_options.add_argument('--headless')
+                chrome_options.add_argument('--no-sandbox')
+                wd = webdriver.Chrome(options=chrome_options)
+                self.wd = EventFiringWebDriver(wd, MyListener())
+                self.wd.maximize_window()
+            elif browser == "firefox":
+                firefox_options = webdriver.FirefoxOptions()
+                firefox_options.headless = True
+                wd = webdriver.Firefox(options=firefox_options)
+                self.wd = EventFiringWebDriver(wd, MyListener())
+                self.wd.maximize_window()
+            elif browser == 'ie':
+                ie_options = webdriver.IeOptions()
+                ie_options.add_argument('headless')
+                wd = webdriver.Ie(options=ie_options)
+                self.wd = EventFiringWebDriver(wd, MyListener())
+                self.wd.maximize_window()
+            else:
+                raise ValueError("Unrecognized browser: %s" % browser)
         else:
-            raise ValueError("Unrecognized browser: %s" % browser)
+            if browser == "chrome":
+                chrome_options = webdriver.ChromeOptions()
+                chrome_options.add_argument('--headless')
+                chrome_options.add_argument('--no-sandbox')
+                wd = webdriver.Remote('192.168.0.102:4444/wd/hub', desired_capabilities=DesiredCapabilities.CHROME)
+                self.wd = EventFiringWebDriver(wd, MyListener())
+                self.wd.maximize_window()
+            elif browser == "firefox":
+                firefox_options = webdriver.FirefoxOptions()
+                firefox_options.headless = True
+                wd = webdriver.Remote('192.168.0.102:4444/wd/hub', desired_capabilities=DesiredCapabilities.FIREFOX)
+                self.wd = EventFiringWebDriver(wd, MyListener())
+                self.wd.maximize_window()
         self.wd.implicitly_wait(int(imp_wait))
         self.base_url = base_url
         self.log = create_log()
