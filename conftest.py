@@ -29,8 +29,12 @@ def pytest_addoption(parser):
         "--grid",
         default=False,
         action='store_true',
-        help='Parameter to run test on remote Selenuim Grid'
-    )
+        help='Parameter to run test on remote Selenuim Grid')
+    parser.addoption(
+        "--remote",
+        default=False,
+        action='store_true',
+        help='Parameter to run test on remote Browserstack service')
     
 
 @pytest.fixture(scope="session")
@@ -39,7 +43,8 @@ def browser(request):
     browser = request.config.getoption("--browser")
     imp_wait = request.config.getoption("--imp_wait")
     grid = request.config.getoption("--grid")
-    fixture = Browser(base_url=base_url, browser=browser, imp_wait=imp_wait, grid=grid)
+    remote = request.config.getoption("--remote")
+    fixture = Browser(base_url=base_url, browser=browser, imp_wait=imp_wait, grid=grid, remote=remote)
     yield fixture
     fixture.quit()
 
