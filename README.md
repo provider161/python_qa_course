@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/provider161/python_qa_course.svg?branch=master)](https://travis-ci.org/provider161/python_qa_course)
+
 # python_qa_course
 
 Repo for Python QA Engineer course on OTUS
